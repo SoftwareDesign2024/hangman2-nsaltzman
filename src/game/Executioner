@@ -1,0 +1,42 @@
+// Name: Nate Saltzman
+
+package game;
+
+import util.DisplayWord;
+import util.HangmanDictionary;
+
+public class Executioner {
+    String mySecretWord;
+    private DisplayWord myDisplayWord;
+
+    public Executioner(HangmanDictionary dictionary, int wordLength) {
+        mySecretWord = makeSecretWord(dictionary, wordLength);
+        myDisplayWord = new DisplayWord(mySecretWord);
+    }
+
+    // Returns a secret word
+    public String makeSecretWord(HangmanDictionary dictionary, int wordLength) {
+        return dictionary.getRandomWord(wordLength).toLowerCase();
+    }
+
+    // Returns true only if the guess is in the secret word
+    public boolean checkGuessInSecret(char guess) {
+        if (mySecretWord.indexOf(guess) >= 0) {
+            myDisplayWord.update(guess, mySecretWord);
+            return true;
+        }
+        return false;
+    }
+
+    public String getSecretWord() {
+        return mySecretWord;
+    }
+
+    public DisplayWord getDisplayWord() {
+        return myDisplayWord;
+    }
+
+    public boolean isWordGuessed() {
+        return myDisplayWord.equals(mySecretWord);
+    }
+}
