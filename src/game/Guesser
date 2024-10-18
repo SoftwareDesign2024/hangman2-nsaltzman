@@ -1,0 +1,31 @@
+// Name: Nate Saltzman
+
+package game;
+
+public abstract class Guesser {
+    // Tracks letters guessed
+    private StringBuilder myLettersLeftToGuess;
+
+    public Guesser(String alphabet) {
+        myLettersLeftToGuess = new StringBuilder(alphabet);
+    }
+
+    // Record that a specific letter was guessed
+    public void recordGuess(char guess) {
+        int index = myLettersLeftToGuess.indexOf("" + guess);
+        if (index >= 0) {
+            myLettersLeftToGuess.deleteCharAt(index);
+        }
+    }
+
+    public boolean hasGuessed(char guess) {
+        return myLettersLeftToGuess.indexOf("" + guess) < 0;
+    }
+
+    public String getLettersLeftToGuess() {
+        return myLettersLeftToGuess.toString();
+    }
+
+    // Automatically generate guesses based on letter frequency
+    public abstract char makeGuess();
+}
