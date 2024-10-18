@@ -1,0 +1,19 @@
+// Name: Nate Saltzman
+
+package game;
+
+import util.ConsoleReader;
+
+// Handles user inputted guessing
+public class UserGuesser extends Guesser {
+
+    public UserGuesser() {
+        super("abcdefghijklmnopqrstuvwxyz");
+    }
+
+    // Prompt user for guess
+    @Override
+    public char makeGuess() {
+        return ConsoleReader.promptString("Make a guess: ").toLowerCase().charAt(0);
+    }
+}
