@@ -1,0 +1,52 @@
+// Name: Nate Saltzman
+
+package game;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import util.DisplayWord;
+import util.HangmanDictionary;
+
+public class CheatingExecutioner extends Executioner {
+    private List<String> myRemainingWords;
+
+    public CheatingExecutioner(HangmanDictionary dictionary, int wordLength) {
+        super(dictionary, wordLength);
+        this.myRemainingWords = new ArrayList<>(dictionary.getWords(wordLength));
+    }
+
+    @Override
+    public boolean checkGuessInSecret(char guess) {
+        // Create template of guesses and find one with most matching remaining words
+        HashMap<DisplayWord, List<String>> templatedWords = new HashMap<>();
+        for (String word : myRemainingWords) {
+            DisplayWord template = new DisplayWord(getDisplayWord());
+            template.update(guess, word);
+            templatedWords.putIfAbsent(template, new ArrayList<>());
+            templatedWords.get(template).add(word);
+        }
+
+        int maxSize = 0;
+        DisplayWord maxKey = null;
+        for (Entry<DisplayWord, List<String>> entry : templatedWords.entrySet()) {
+            //System.out.println(entry.getValue());
+            if (entry.getValue().size() > maxSize) {
+                maxSize = entry.getValue().size();
+                maxKey = entry.getKey();
+            }
+        }
+
+        // Update secret word to match template of guesses
+        myRemainingWords = templatedWords.get(maxKey);
+        mySecretWord = myRemainingWords.get(0);
+        DisplayWord myDisplayWord = maxKey;
+        return super.checkGuessInSecret(guess);
+    }
+
+    @Override
+    public String getSecretWord(){
+        return mySecretWord;
+    }
+}
