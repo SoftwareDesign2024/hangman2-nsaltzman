@@ -1,0 +1,19 @@
+// Name: Nate Saltzman
+
+package game;
+
+public class AutoGuesser extends Guesser {
+    private static final String LETTERS_ORDERED_BY_FREQUENCY = "etaoinshrldcumfpgwybvkxjqz";
+    private int myIndex;
+
+    public AutoGuesser() {
+        super("abcdefghijklmnopqrstuvwxyz");
+        myIndex = 0;
+    }
+
+    // Automatically generate guesses based on the provided letter frequency in LETTERS_ORDERED_BY_FREQUENCY
+    @Override
+    public char makeGuess() {
+        return LETTERS_ORDERED_BY_FREQUENCY.charAt(myIndex++);
+    }
+}
